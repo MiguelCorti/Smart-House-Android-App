@@ -11,11 +11,7 @@ export default class ProfileScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          //onPress={() => this.props.navigation.navigate('ProfileScreen')}
-          style={{padding: 10, marginTop: 11, marginBottom: 35}}>
-          <Text style={styles.loginText}>Já tenho uma conta</Text>
-        </TouchableOpacity>
+        <Text> Olá Usuário</Text>
       </View>
     );
   }
@@ -25,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 

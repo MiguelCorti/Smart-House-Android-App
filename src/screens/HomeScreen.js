@@ -12,9 +12,9 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{position: 'absolute', top: 179}}>
+        <View style={{position: 'absolute', top: 100, alignItems: 'center'}}>
           <Image
-            style={{width: 100, height: 100}}
+            style={{width: 200, height: 200}}
             source={require('../../assets/images/house-icon.png')}
           />
         </View>

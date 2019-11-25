@@ -6,8 +6,24 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 
 const MainNavigator = createStackNavigator(
   {
-    Home: {screen: HomeScreen},
-    Profile: {screen: ProfileScreen},
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: {
+        headerStyle: {
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        headerStyle: {
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
   },
   {
     initialRouteName: 'Home',
