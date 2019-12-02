@@ -16,18 +16,29 @@ export default class ProfileScreen extends Component {
     super(props);
 
     this.state = {
-      bulb1_on: false
+      bulb1_on: false,
+      bulb2_on: false
     }
 
-    this.toggleLight = this.toggleLight.bind(this)
+    this.toggleLight1 = this.toggleLight1.bind(this)
+    this.toggleLight2 = this.toggleLight2.bind(this)
   }
 
-  toggleLight() {
+  toggleLight1() {
     if(this.state.bulb1_on) {
       this.setState({bulb1_on: false})
     }
     else {
       this.setState({bulb1_on: true})
+    }
+  }
+
+  toggleLight2() {
+    if(this.state.bulb2_on) {
+      this.setState({bulb2_on: false})
+    }
+    else {
+      this.setState({bulb2_on: true})
     }
   }
 
@@ -38,9 +49,8 @@ export default class ProfileScreen extends Component {
           Minha Casa
         </Text>
 
-        <View style={styles.boxContainer}>
-          <TouchableOpacity
-            onPress = {this.toggleLight}>
+        <TouchableOpacity onPress = {this.toggleLight1}>
+          <View style={styles.boxContainer}>
             {this.state.bulb1_on ?
               <Image
                 style={{width: 100, height: 100, marginTop: 10}}
@@ -52,8 +62,36 @@ export default class ProfileScreen extends Component {
                 source={require('../../assets/images/bulb_off.png')}
               />
             }
-          </TouchableOpacity>
-        </View>
+            <Text> Luz da Cozinha </Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress = {this.toggleLight2}>
+          <View style={styles.boxContainer}>
+            {this.state.bulb2_on ?
+              <Image
+                style={{width: 100, height: 100, marginTop: 10}}
+                source={require('../../assets/images/bulb_on.png')}
+              />
+              :
+              <Image
+                style={{width: 100, height: 100, marginTop: 10}}
+                source={require('../../assets/images/bulb_off.png')}
+              />
+            }
+            <Text> Luz da Sala </Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress = {()=>this.props.navigation.navigate('AddComponent')}>
+          <View style={styles.addBoxContainer}>
+            <Image
+              style={{width: 50, height: 50, marginTop: 10}}
+              source={require('../../assets/images/plus.png')}
+            />
+            <Text> Novo </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -77,6 +115,16 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 30,
+    borderColor: '#111',
+    borderWidth: 2,
+    marginTop: 25,
+    alignItems: 'center'
+  },
+
+  addBoxContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
     borderColor: '#111',
     borderWidth: 2,
     marginTop: 25,

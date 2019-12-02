@@ -6,6 +6,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
+import AddComponentScreen from "./src/screens/AddComponentScreen";
 import stores from './src/stores';
 import { Provider } from 'mobx-react';
 import Colors from './src/constants/Colors';
@@ -44,6 +45,16 @@ const MainNavigator = createStackNavigator(
     },
     Profile: {
       screen: ProfileScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
+    AddComponent: {
+      screen: AddComponentScreen,
       navigationOptions: {
         headerStyle: {
           backgroundColor: '',
