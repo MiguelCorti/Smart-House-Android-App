@@ -1,8 +1,6 @@
-import 'react-native-gesture-handler'
 import React, { Component } from 'react';
-import { View, YellowBox, AppRegistry, SafeAreaView } from 'react-native';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { View, YellowBox, AppRegistry } from 'react-native';
+import {createStackNavigator, createSwitchNavigator, createBottomTabNavigator, SafeAreaView} from 'react-navigation';
 //import {HomeScreen, ProfileScreen, RegisterScreen, LoginScreen} from './src/screens';
 import HomeScreen from "./src/screens/HomeScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
@@ -10,6 +8,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import stores from './src/stores';
 import { Provider } from 'mobx-react';
+import Colors from './src/constants/Colors';
 
 const MainNavigator = createStackNavigator(
   {
@@ -17,15 +16,7 @@ const MainNavigator = createStackNavigator(
       screen: HomeScreen,
       navigationOptions: {
         headerStyle: {
-          elevation: 0,
-          borderBottomWidth: 0
-        }
-      }
-    },
-    Profile: {
-      screen: ProfileScreen,
-      navigationOptions: {
-        headerStyle: {
+          backgroundColor: '',
           elevation: 0,
           borderBottomWidth: 0
         }
@@ -35,6 +26,7 @@ const MainNavigator = createStackNavigator(
       screen: RegisterScreen,
       navigationOptions: {
         headerStyle: {
+          backgroundColor: '',
           elevation: 0,
           borderBottomWidth: 0
         }
@@ -44,6 +36,17 @@ const MainNavigator = createStackNavigator(
       screen: LoginScreen,
       navigationOptions: {
         headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
           elevation: 0,
           borderBottomWidth: 0
         }
@@ -55,16 +58,27 @@ const MainNavigator = createStackNavigator(
   }
 );
 
-const ProviderConfigured = () => (
-  <Provider {...stores}>
-      <SafeAreaView style={{ flex: 1 }}>
-          <MainNavigator />
-      </SafeAreaView>
-  </Provider>
-);
+// const ProviderConfigured = () => (
+//   <Provider {...stores}>
+//       <SafeAreaView style={{ flex: 1 }}>
+//           <MainNavigator />
+//       </SafeAreaView>
+//   </Provider>
+// );
+//
+// AppRegistry.registerComponent('smart_house', () => ProviderConfigured);
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider {...stores}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <MainNavigator/>
+        </SafeAreaView>
+      </Provider>
+    );
+  }
+}
 
-AppRegistry.registerComponent('smart_house', () => ProviderConfigured);
+//const App = createAppContainer(MainNavigator);
 
-const App = createAppContainer(MainNavigator);
-
-export default App;
+//export default App;

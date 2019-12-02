@@ -13,12 +13,11 @@ import DefaultButton from '../components/DefaultButton'
 
 @inject ('user')
 @observer
-export default class RegisterScreen extends Component {
+export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.onButtonPress = this.onButtonPress.bind(this)
   }
 
   updateEmail(text) {
@@ -31,6 +30,13 @@ export default class RegisterScreen extends Component {
 
   isButtonDisabled() {
     return (this.props.user.email.length == 0 || this.props.user.password.length == 0)
+  }
+
+  async onButtonPress() {
+    await this.props.user.signIn()
+    if(this.props.user.success) {
+      this.props.navigation.navigate('Profile')
+    }
   }
 
   render() {
@@ -60,7 +66,7 @@ export default class RegisterScreen extends Component {
 
         <View style={styles.buttonContainer}>
           <DefaultButton
-            onPress={() => this.props.navigation.navigate('Profile')}
+            onPress={this.onButtonPress}
             disabled={this.isButtonDisabled()}
             btnLabel={'Entrar'}
           />

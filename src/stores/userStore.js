@@ -8,6 +8,7 @@ export default class UserStore {
 	@observable name = '';
 	@observable email = '';
 	@observable password = '';
+	@observable resp = {};
 
 	//Auxiliando chamadas
 	@observable success = false;
@@ -35,31 +36,29 @@ export default class UserStore {
 	}
 
 	@action
-	async userSignIn() {
-		this.success = false;
-
-		await UserService.userSignIn(
-		this.email,
-		this.password
-		).then(
-		response => {
-			console.log(response);
-
-			this.email = response.data.data.email;
-			this.name = response.data.data.name;
-			this.username = response.data.data.username;
-			this.success = true;
-		},
-		error => {
-			console.log(error)
-			this.success = false;
-
-			if(error.response.status == 500) {
-					this.errorMsg = 'Tente novamente mais tarde...'
-			}
-			else
-					this.errorMsg = error.response.data.errors[0];
-		});
+	async signIn() {
+		this.resp = UserService.userSignIn(this.email, this.password)
+		this.email = this.resp.data.email;
+		this.name = this.resp.data.name;
+		this.success = this.resp.success;
+		// await UserService.userSignIn(this.email, this.password).then(
+		// 	response => {
+		// 		console.log(response);
+		//
+		// 		this.email = response.data.data.email;
+		// 		this.name = response.data.data.name;
+		// 		this.success = true;
+		// 	},
+		// 	error => {
+		// 		console.log(error)
+		// 		this.success = false;
+		//
+		// 		if(error.response.status == 500)
+		// 			this.errorMsg = 'Tente novamente mais tarde...'
+		// 		else
+		// 			this.errorMsg = error.response.data.errors[0];
+		// 	}
+		// );
 	}
 
 	@action

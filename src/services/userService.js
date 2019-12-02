@@ -17,17 +17,18 @@ class UserService {
 	}
 
 	userSignIn(email, password) {
-		return api.post('/auth/sign_in.json', {
-			email,
-			password
-		})
-		.then(response => {
-			return response;
-		})
-		.catch(error => {
-
-			throw error;
-		});
+		return {success: true, data: {email: "miguel.corti36@gmail.com", name: "Miguel Corti"}}
+		// return api.post('/auth/sign_in.json', {
+		// 	email,
+		// 	password
+		// })
+		// .then(response => {
+		// 	return response;
+		// })
+		// .catch(error => {
+		//
+		// 	throw error;
+		// });
 	}
 }
 
