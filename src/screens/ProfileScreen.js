@@ -5,11 +5,13 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 import {observer, inject} from 'mobx-react';
 
 @inject ('user')
+@inject ('component')
 @observer
 export default class ProfileScreen extends Component {
   constructor(props){
@@ -42,56 +44,51 @@ export default class ProfileScreen extends Component {
     }
   }
 
+  componentPressed(index) {
+    console.log("pressed")
+  }
+
+  renderComponents() {
+    return this.props.component.components.map((cp, i) => {
+      console.log(cp.on)
+      return (
+        <TouchableOpacity onPress = {this.componentPressed(i)} key = {i}>
+          <View style={styles.boxContainer}>
+            {cp.on ?
+              (<View
+                style={{marginTop: 10, backgroundColor: '#0a0', width: 75, height: 75, borderWidth: 2, borderRadius: 100, borderColor: '#0d0'}}
+              />)
+              :
+              (<View
+                style={{width: 75, height: 75, marginTop: 10, borderWidth: 2, backgroundColor: '#ccc', borderRadius: 100, borderColor: '#888'}}
+              />)
+            }
+            <Text> {cp.component} {cp.env} </Text>
+          </View>
+        </TouchableOpacity>
+      )
+    })
+  }
+// {this.renderComponents()}
   render() {
     return (
       <View style={styles.container}>
         <Text style={{marginTop: 25, fontSize: 36, fontWeight: 'bold'}}>
           Minha Casa
         </Text>
+        <ScrollView style={{alignSelf: 'stretch'}} contentContainerStyle={{alignItems: 'center'}}>
+          {this.renderComponents()}
 
-        <TouchableOpacity onPress = {this.toggleLight1}>
-          <View style={styles.boxContainer}>
-            {this.state.bulb1_on ?
+          <TouchableOpacity onPress = {()=>this.props.navigation.navigate('AddComponent')}>
+            <View style={styles.addBoxContainer}>
               <Image
-                style={{width: 100, height: 100, marginTop: 10}}
-                source={require('../../assets/images/bulb_on.png')}
+                style={{width: 50, height: 50, marginTop: 10}}
+                source={require('../../assets/images/plus.png')}
               />
-              :
-              <Image
-                style={{width: 100, height: 100, marginTop: 10}}
-                source={require('../../assets/images/bulb_off.png')}
-              />
-            }
-            <Text> Luz da Cozinha </Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress = {this.toggleLight2}>
-          <View style={styles.boxContainer}>
-            {this.state.bulb2_on ?
-              <Image
-                style={{width: 100, height: 100, marginTop: 10}}
-                source={require('../../assets/images/bulb_on.png')}
-              />
-              :
-              <Image
-                style={{width: 100, height: 100, marginTop: 10}}
-                source={require('../../assets/images/bulb_off.png')}
-              />
-            }
-            <Text> Luz da Sala </Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress = {()=>this.props.navigation.navigate('AddComponent')}>
-          <View style={styles.addBoxContainer}>
-            <Image
-              style={{width: 50, height: 50, marginTop: 10}}
-              source={require('../../assets/images/plus.png')}
-            />
-            <Text> Novo </Text>
-          </View>
-        </TouchableOpacity>
+              <Text> Novo </Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   }
@@ -112,8 +109,8 @@ const styles = StyleSheet.create({
   },
 
   boxContainer: {
-    width: 150,
-    height: 150,
+    width: 125,
+    height: 125,
     borderRadius: 30,
     borderColor: '#111',
     borderWidth: 2,

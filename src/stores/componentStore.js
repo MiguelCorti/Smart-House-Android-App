@@ -1,13 +1,15 @@
-//Defines state related to the user's session and actions
 //import AsyncStorage from '@react-native-community/async-storage';
 import { observable, action } from 'mobx';
-import ComponentService from '../services/userService';
+import ComponentService from '../services/componentService';
+import api from '../../axios';
 
-export default class UserStore {
-	//User information
-	@observable sensor = '';
+export default class ComponentStore {
+	//Component information
+	@observable component = '';
 	@observable room = '';
-	@observable ports = '';
+	@observable port1 = '';
+	@observable port2 = '';
+	@observable components = [];
 	@observable resp = {};
 
 	//Auxiliando chamadas
@@ -17,8 +19,34 @@ export default class UserStore {
 
 	@action
 	async registerComponent() {
-		this.resp = ComponentService.registerComponent(this.sensor, this.room, this.ports)
-
+		let portsArray = [parseInt(this.port1)]
+		if(this.port2 != '') {
+			portsArray.push(parseInt(this.port2))
+		}
+		let body = {
+			component: this.component,
+			env: this.room,
+			ports: portsArray
+		}
+		console.log(body)
+		await api.post('/insert-component', body).then(
+			response => {
+				console.log(response)
+				this.resp = response.data
+				let full_component = body
+				full_component["id"] = response.data.id
+				full_component["on"] = false
+				this.components.push(full_component)
+				this.clearData()
+			})
+			.catch(error => {
+				console.log(error)
+				let full_component = body
+				//full_component["id"] = response.data.id
+				full_component["on"] = false
+				this.components.push(full_component)
+			}
+		);
 		// await UserService.userSignIn(this.email, this.password).then(
 		// 	response => {
 		// 		console.log(response);
@@ -41,12 +69,10 @@ export default class UserStore {
 
 	@action
 	clearData() {
-		this.name = '';
-		this.email = '';
-		this.password = '';
-		this.success = false
-		this.hasError = false;
-		this.errorMsg = '';
+		this.port1 = ''
+		this.port2 = ''
+		this.component = ''
+		this.room = ''
 	}
 
 }

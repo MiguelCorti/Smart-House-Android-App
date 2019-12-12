@@ -16,7 +16,7 @@ class ComponentService {
 		});
 	}
 
-	userSignIn(email, password) {
+	registerComponent(sensor, room, ports) {
 		return {success: true, data: {email: "miguel.corti36@gmail.com", name: "Miguel Corti"}}
 		// return api.post('/auth/sign_in.json', {
 		// 	email,
@@ -32,4 +32,4 @@ class ComponentService {
 	}
 }
 
-export default new UserService();
+export default new ComponentService();

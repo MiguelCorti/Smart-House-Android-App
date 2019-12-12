@@ -6,60 +6,117 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+  Picker
 } from 'react-native';
+import {observer, inject} from 'mobx-react';
 import DefaultButton from '../components/DefaultButton'
 
+@inject ('component')
+@observer
 export default class AddComponentScreen extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      sensor: "",
-      room: ""
-    };
   }
 
-  updateSensor(text) {
-    this.setState({sensor: text})
+  updateComponent(text) {
+    this.props.component.component = text
   }
 
   updateRoom(text) {
-    this.setState({room: text})
+    this.props.component.room = text
+  }
+
+  updatePort1(text) {
+    this.props.component.port1 = text
+  }
+
+  updatePort2(text) {
+    this.props.component.port2 = text
   }
 
   isButtonDisabled() {
-    return (this.state.sensor.length == 0 || this.state.room.length == 0)
+    return (this.props.component.component == 0 || this.props.component.room.length == 0
+      || this.props.component.port1.length == 0)
+  }
+
+  async buttonPressed() {
+    await this.props.component.registerComponent();
+    if(this.props.component.success) {
+      this.props.navigation.navigate('Profile');
+    }
   }
 
   render() {
     return (
       <View style={styles.mainContainer}>
-        <Text style={{position: 'absolute', marginTop: 25, fontSize: 36, fontWeight: 'bold', alignItems: 'center'}}>
+        <Text style={{textAlign: 'center', marginTop: 25, fontSize: 36, fontWeight: 'bold', alignItems: 'center'}}>
           Adicionar Componente
         </Text>
         <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.emailInput}
-            onChangeText={text => this.updateSensor(text)}
-            placeholder={"Digite o sensor"}
-            value={this.state.sensor}
-            autoCapitalize='none'
-          />
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+            Escolha o componente:
+          </Text>
+          <View style={{width:150, borderWidth: 1, borderRadius: 10}}>
+            <Picker
+              selectedValue={this.props.component.component}
+              style={styles.componentInput}
+              onValueChange={(value, index) => this.updateComponent(value)}
+            >
+              <Picker.Item label="Luz" value="led"/>
+              <Picker.Item label="Ventilador" value="motor"/>
+              <Picker.Item label="Sensor de Distância" value="dist"/>
+            </Picker>
+          </View>
 
-          <TextInput
-            style={styles.passwordInput}
-            secureTextEntry={true}
-            onChangeText={text => this.updateRoom(text)}
-            placeholder={"Digite o ambiente"}
-            value={this.state.room}
-            autoCapitalize='none'
-          />
+          <Text style={{marginTop: 15, fontSize: 16, fontWeight: 'bold'}}>
+            Digite as portas do componente:
+          </Text>
+
+          <View style={{flexDirection: 'row'}}>
+            <TextInput
+              keyboardType = 'number-pad'
+              maxLength = {2}
+              style={[styles.portInput,{marginRight: 25,justifyContent: 'center'}]}
+              onChangeText={text => this.updatePort1(text)}
+              placeholder={"P1"}
+              value={this.props.component.port1}
+              autoCapitalize='none'
+            />
+            <TextInput
+              keyboardType = 'number-pad'
+              maxLength = {2}
+              style={[styles.portInput,{justifyContent: 'center'}]}
+              onChangeText={text => this.updatePort2(text)}
+              placeholder={"P2"}
+              value={this.props.component.port2}
+              autoCapitalize='none'
+            />
+          </View>
+
+          <Text style={{marginTop: 15, fontSize: 16, fontWeight: 'bold'}}>
+            Escolha o ambiente:
+          </Text>
+          <View style={{width:150, borderWidth: 1, borderRadius: 10}}>
+            <Picker
+              selectedValue={this.props.component.room}
+              style={styles.roomInput}
+              onValueChange={(value, index) => this.updateRoom(value)}
+            >
+              <Picker.Item label="Quarto" value="quarto"/>
+              <Picker.Item label="Sala" value="sala"/>
+              <Picker.Item label="Cozinha" value="cozinha"/>
+              <Picker.Item label="Banheiro" value="banheiro"/>
+            </Picker>
+          </View>
+
         </View>
 
         <View style={styles.buttonContainer}>
           <DefaultButton
-            onPress={() => this.props.navigation.navigate('Profile')}
+            onPress={() => this.buttonPressed()}
             disabled={this.isButtonDisabled()}
             btnLabel={'Adicionar'}
           />
@@ -79,28 +136,33 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     alignSelf: 'stretch',
-    justifyContent: 'center',
+    marginTop: 50,
     alignItems: 'center',
   },
 
-  emailInput: {
-    alignSelf: 'stretch',
-    marginLeft: 25,
-    marginRight: 25,
-    marginTop: 30,
+  componentInput: {
+    //alignSelf: 'stretch',
+    width: 150,
     height: 50,
+    color: '#000',
+    borderWidth: 1,
+    borderColor: '#4287f5',
+    fontSize: 16
+  },
+
+  roomInput: {
+    //alignSelf: 'stretch',
+    width: 150,
     color: '#000',
     borderBottomWidth: 1,
     borderBottomColor: '#4287f5',
     fontSize: 16
   },
 
-  passwordInput: {
-    alignSelf: 'stretch',
-    marginLeft: 25,
-    marginRight: 25,
-    marginTop: 40,
+  portInput: {
+    width: 50,
     color: '#000',
+    textAlign: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#4287f5',
     fontSize: 16

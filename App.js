@@ -7,11 +7,14 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import AddComponentScreen from "./src/screens/AddComponentScreen";
+import ComponentScreen from "./src/screens/ComponentScreen";
+import ListTriggerScreen from "./src/screens/ListTriggerScreen";
 import stores from './src/stores';
 import { Provider } from 'mobx-react';
 import Colors from './src/constants/Colors';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const MainNavigator = createStackNavigator(
+const LoggedOutStack = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
@@ -43,6 +46,13 @@ const MainNavigator = createStackNavigator(
         }
       }
     },
+  },
+  {
+    initialRouteName: 'Home',
+  }
+)
+const ComponentStack = createStackNavigator(
+  {
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
@@ -63,11 +73,89 @@ const MainNavigator = createStackNavigator(
         }
       }
     },
+    Component: {
+      screen: ComponentScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Profile',
   }
-);
+)
+
+const TriggerStack = createStackNavigator(
+  {
+    ListTrigger: {
+      screen: ListTriggerScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
+  },
+  {
+    initialRouteName: 'ListTrigger',
+  }
+)
+
+const BottomTab = createBottomTabNavigator({
+  Home: {
+    screen: ComponentStack,
+    path: '',
+    navigationOptions: {
+      tabBarLabel: 'Home',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="home" size={26} color={tintColor}></Icon>
+      )
+    },
+  },
+  Trigger: {
+    screen: TriggerStack,
+    path: '',
+    navigationOptions: {
+      tabBarLabel: 'Trigger',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="wallet" size={26} color={tintColor}></Icon>
+      )
+    },
+  },
+},{
+    initialRouteName: 'Home',
+    tabBarOptions: {
+      style: {
+        backgroundColor: '#FAFAFA',
+        paddingTop: 10,
+        height: 52
+      },
+      activeTintColor: 'blue',
+      inactiveTintColor: 'grey'
+    }
+  }
+)
+
+const BaseStack = createSwitchNavigator(
+  {
+    LoggedOutStack: {
+      screen: LoggedOutStack,
+      path: ''
+    },
+    BottomTab: {
+      screen: BottomTab,
+      path: ''
+    }
+  },{
+      initialRouteName: 'LoggedOutStack',
+    }
+)
 
 // const ProviderConfigured = () => (
 //   <Provider {...stores}>
@@ -83,7 +171,7 @@ export default class App extends React.Component {
     return (
       <Provider {...stores}>
         <SafeAreaView style={{ flex: 1 }}>
-          <MainNavigator/>
+          <BaseStack/>
         </SafeAreaView>
       </Provider>
     );
