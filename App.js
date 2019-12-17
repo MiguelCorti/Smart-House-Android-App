@@ -7,8 +7,11 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import AddComponentScreen from "./src/screens/AddComponentScreen";
+import AddTriggerScreen from "./src/screens/AddTriggerScreen";
+import AddSensorTriggerScreen from "./src/screens/AddSensorTriggerScreen";
 import ComponentScreen from "./src/screens/ComponentScreen";
 import ListTriggerScreen from "./src/screens/ListTriggerScreen";
+import MusicScreen from "./src/screens/MusicScreen";
 import stores from './src/stores';
 import { Provider } from 'mobx-react';
 import Colors from './src/constants/Colors';
@@ -101,9 +104,47 @@ const TriggerStack = createStackNavigator(
         }
       }
     },
+    AddTrigger: {
+      screen: AddTriggerScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
+    AddSensorTrigger: {
+      screen: AddSensorTriggerScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
   },
   {
     initialRouteName: 'ListTrigger',
+  }
+)
+
+const MusicStack = createStackNavigator(
+  {
+    Music: {
+      screen: MusicScreen,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '',
+          elevation: 0,
+          borderBottomWidth: 0
+        }
+      }
+    },
+  },
+  {
+    initialRouteName: 'Music',
   }
 )
 
@@ -112,9 +153,9 @@ const BottomTab = createBottomTabNavigator({
     screen: ComponentStack,
     path: '',
     navigationOptions: {
-      tabBarLabel: 'Home',
+      tabBarLabel: 'Componentes',
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="home" size={26} color={tintColor}></Icon>
+        <Icon name="lightbulb-o" size={26} color={tintColor}></Icon>
       )
     },
   },
@@ -122,9 +163,19 @@ const BottomTab = createBottomTabNavigator({
     screen: TriggerStack,
     path: '',
     navigationOptions: {
-      tabBarLabel: 'Trigger',
+      tabBarLabel: 'Gatilhos',
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="wallet" size={26} color={tintColor}></Icon>
+        <Icon name="clock-o" size={26} color={tintColor}></Icon>
+      )
+    },
+  },
+  Music: {
+    screen: MusicStack,
+    path: '',
+    navigationOptions: {
+      tabBarLabel: 'Música',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="music" size={26} color={tintColor}></Icon>
       )
     },
   },
@@ -136,7 +187,7 @@ const BottomTab = createBottomTabNavigator({
         paddingTop: 10,
         height: 52
       },
-      activeTintColor: 'blue',
+      activeTintColor: '#4287f5',
       inactiveTintColor: 'grey'
     }
   }

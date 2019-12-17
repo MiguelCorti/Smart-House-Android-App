@@ -1,0 +1,6 @@
+{this.props.component.components.map((cp, i) => {
+  let splitted = cp.component.split('_')
+  if(splitted.length <= 1) {
+    return (<Picker.Item label={cp.componentName} value={i} key={i}/>)
+  }
+})}

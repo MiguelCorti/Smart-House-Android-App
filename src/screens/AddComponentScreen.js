@@ -38,13 +38,14 @@ export default class AddComponentScreen extends Component {
   }
 
   isButtonDisabled() {
-    return (this.props.component.component == 0 || this.props.component.room.length == 0
+    return (this.props.component.component.length == 0 || this.props.component.room.length == 0
       || this.props.component.port1.length == 0)
   }
 
   async buttonPressed() {
     await this.props.component.registerComponent();
     if(this.props.component.success) {
+      this.props.component.success = false
       this.props.navigation.navigate('Profile');
     }
   }
@@ -52,7 +53,7 @@ export default class AddComponentScreen extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-        <Text style={{textAlign: 'center', marginTop: 25, fontSize: 36, fontWeight: 'bold', alignItems: 'center'}}>
+        <Text style={{textAlign: 'center', fontSize: 30, fontWeight: 'bold', alignItems: 'center'}}>
           Adicionar Componente
         </Text>
         <View style={styles.inputContainer}>
@@ -67,7 +68,9 @@ export default class AddComponentScreen extends Component {
             >
               <Picker.Item label="Luz" value="led"/>
               <Picker.Item label="Ventilador" value="motor"/>
-              <Picker.Item label="Sensor de Distância" value="dist"/>
+              <Picker.Item label="Sensor Distância" value="distance_sensor"/>
+              <Picker.Item label="Sensor Movimento" value="motion_sensor"/>
+              <Picker.Item label="Sensor Luz" value="light_sensor"/>
             </Picker>
           </View>
 
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     alignSelf: 'stretch',
-    marginTop: 50,
+    marginTop: 20,
     alignItems: 'center',
   },
 

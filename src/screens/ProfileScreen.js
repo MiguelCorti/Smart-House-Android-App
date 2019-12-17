@@ -16,43 +16,29 @@ import {observer, inject} from 'mobx-react';
 export default class ProfileScreen extends Component {
   constructor(props){
     super(props);
-
-    this.state = {
-      bulb1_on: false,
-      bulb2_on: false
-    }
-
-    this.toggleLight1 = this.toggleLight1.bind(this)
-    this.toggleLight2 = this.toggleLight2.bind(this)
   }
 
-  toggleLight1() {
-    if(this.state.bulb1_on) {
-      this.setState({bulb1_on: false})
+  async componentPressed(index) {
+    let cp = this.props.component.components[index]
+    if(cp.component == "led") {
+      await this.props.component.toggleLed(cp)
+    } else {
+      await this.props.component.toggleMotor(cp)
     }
-    else {
-      this.setState({bulb1_on: true})
+    if(this.props.component.success) {
+      this.props.component.success = false
+      if(cp.on) {
+        this.props.component.components[index].on = false
+      } else {
+        this.props.component.components[index].on = true
+      }
     }
-  }
-
-  toggleLight2() {
-    if(this.state.bulb2_on) {
-      this.setState({bulb2_on: false})
-    }
-    else {
-      this.setState({bulb2_on: true})
-    }
-  }
-
-  componentPressed(index) {
-    console.log("pressed")
   }
 
   renderComponents() {
     return this.props.component.components.map((cp, i) => {
-      console.log(cp.on)
       return (
-        <TouchableOpacity onPress = {this.componentPressed(i)} key = {i}>
+        <TouchableOpacity onPress = {()=>this.componentPressed(i)} key = {i}>
           <View style={styles.boxContainer}>
             {cp.on ?
               (<View
@@ -63,18 +49,18 @@ export default class ProfileScreen extends Component {
                 style={{width: 75, height: 75, marginTop: 10, borderWidth: 2, backgroundColor: '#ccc', borderRadius: 100, borderColor: '#888'}}
               />)
             }
-            <Text> {cp.component} {cp.env} </Text>
+            <Text style={{textAlign: 'center'}}>{cp.componentName}</Text>
           </View>
         </TouchableOpacity>
       )
     })
   }
-// {this.renderComponents()}
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{marginTop: 25, fontSize: 36, fontWeight: 'bold'}}>
-          Minha Casa
+        <Text style={{marginTop: 0, fontSize: 36, fontWeight: 'bold'}}>
+          Componentes
         </Text>
         <ScrollView style={{alignSelf: 'stretch'}} contentContainerStyle={{alignItems: 'center'}}>
           {this.renderComponents()}
